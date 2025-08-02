@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Komik - Admin Panel</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Menggunakan gaya yang sama dengan admin.html */
+      body {
+        background-color: var(--body-color);
+      }
+      .admin-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--container-color);
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px hsla(var(--hue), 4%, 15%, 0.2);
+      }
+      .admin-form .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .admin-form label {
+        display: block;
+        margin-bottom: var(--mb-0-5);
+        font-weight: var(--font-semi-bold);
+        color: var(--title-color);
+      }
+      .admin-form input,
+      .admin-form textarea,
+      .admin-form select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--text-color-light);
+        background-color: var(--input-color);
+        color: var(--text-color);
+        font-family: var(--body-font);
+      }
+      .admin-form textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+      .genre-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
+      }
+      .genre-list label {
+        font-weight: var(--font-medium);
+      }
+      .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .button-danger {
+        background-color: hsl(0, 80%, 60%);
+      }
+      .button-danger:hover {
+        background-color: hsl(0, 80%, 55%);
+      }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      .admin-header a {
+        margin-bottom: 0 !important;
+      }
+      .admin-header i {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--title-color);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="admin-container">
+        <div class="admin-header">
+          <a href="admin.html" class="button">&larr; Kembali ke Daftar Komik</a>
+          <i class="fas" id="theme-button"></i>
+          <!-- TOMBOL DARK MODE BARU -->
+        </div>
+
+        <h1 id="comic-title-heading">Mengedit: Memuat nama komik...</h1>
+
+        <hr style="margin: 2rem 0" />
+
+        <!-- Formulir ini akan diisi otomatis oleh JavaScript -->
+        <form id="edit-comic-form" class="admin-form">
+          <div class="form-group">
+            <label for="comic-title">Judul Komik</label
+            ><input type="text" id="comic-title" required />
+          </div>
+          <div class="form-group">
+            <label for="comic-alt-titles"
+              >Judul Alternatif (Satu per baris)</label
+            ><textarea id="comic-alt-titles"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="comic-authors">Author (Pisahkan dengan koma)</label
+            ><input type="text" id="comic-authors" />
+          </div>
+          <div class="form-group">
+            <label for="comic-artists">Artist (Pisahkan dengan koma)</label
+            ><input type="text" id="comic-artists" />
+          </div>
+          <div class="form-group">
+            <label for="comic-synopsis">Sinopsis</label
+            ><textarea id="comic-synopsis" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="comic-thumbnail">URL Thumbnail Komik</label
+            ><input type="text" id="comic-thumbnail" required />
+          </div>
+          <div class="form-group">
+            <label>Genre</label>
+            <div class="genre-list" id="genre-list-container"></div>
+          </div>
+          <div class="form-group">
+            <label for="comic-type">Tipe</label
+            ><select id="comic-type">
+              <option value="Manhwa">Manhwa</option>
+              <option value="Manhua">Manhua</option>
+              <option value="Manga">Manga</option>
+              <option value="Doujinshi">Doujinshi</option>
+              <option value="Webtoon">Webtoon</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="comic-status">Status</label
+            ><select id="comic-status">
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+              <option value="Hiatus">Hiatus</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="button">Simpan Perubahan</button>
+            <button
+              type="button"
+              id="delete-comic-btn"
+              class="button button-danger"
+            >
+              Hapus Komik Ini
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script type="module" src="js/firebase.js" defer></script>
+    <script type="module" src="js/edit-comic.js" defer></script>
+  </body>
+</html>

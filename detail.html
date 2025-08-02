@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Judul halaman akan diubah oleh JavaScript -->
+    <title>Memuat Komik... - Manga o Yonde</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Gaya khusus untuk halaman detail */
+      .detail__container {
+        display: grid;
+        gap: 2rem;
+      }
+      .detail__thumbnail img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px hsla(var(--hue), 4%, 15%, 0.2);
+      }
+      .detail__info h1 {
+        font-size: var(--h1-font-size);
+        margin-bottom: var(--mb-0-5);
+      }
+      .info-table {
+        margin-top: 1.5rem;
+        width: 100%;
+      }
+      .info-table td {
+        padding: 0.5rem 0;
+        vertical-align: top;
+      }
+      .info-table td:first-child {
+        font-weight: var(--font-semi-bold);
+        width: 120px;
+      }
+      .info-tags a {
+        display: inline-block;
+        background-color: var(--input-color);
+        color: var(--text-color);
+        padding: 0.25rem 0.75rem;
+        margin: 0.25rem;
+        border-radius: 0.25rem;
+        font-size: var(--small-font-size);
+        transition: 0.3s;
+      }
+      .info-tags a:hover {
+        background-color: var(--first-color);
+        color: #fff;
+      }
+      .detail__synopsis {
+        margin-top: 1.5rem;
+      }
+      .chapter-list {
+        margin-top: 2rem;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid var(--text-color-light);
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+      .chapter-list__item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0.5rem;
+        border-bottom: 1px solid var(--input-color);
+      }
+      .chapter-list__item:last-child {
+        border-bottom: none;
+      }
+      .chapter-list__item a {
+        color: var(--title-color);
+        font-weight: var(--font-medium);
+      }
+      .chapter-list__item a:hover {
+        color: var(--first-color);
+      }
+      .chapter-list__date {
+        font-size: var(--small-font-size);
+        color: var(--text-color-light);
+      }
+
+      @media screen and (min-width: 768px) {
+        .detail__container {
+          grid-template-columns: 300px 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header yang sama dengan halaman utama -->
+    <header class="header">
+      <nav class="nav container">
+        <a href="index.html" class="nav__logo">Manga o Yonde</a>
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="index.html" class="nav__link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="manga.html" class="nav__link">Daftar Manga</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav__actions">
+          <i class="fas fa-search" id="search-button"></i>
+          <i class="fas fa-moon" id="theme-button"></i>
+          <a href="admin.html" class="login-button">Login / Admin</a>
+          <div class="nav__toggle" id="nav-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="main">
+      <section class="container">
+        <!-- Konten akan diisi oleh JavaScript -->
+        <div id="detail-content">
+          <p>Memuat data komik...</p>
+        </div>
+
+        <!-- Area Komentar Disqus -->
+        <div id="disqus_thread" style="margin-top: 2rem"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container container">
+        <p>&copy; 2025 Manga o Yonde. Semua hak cipta dilindungi.</p>
+      </div>
+    </footer>
+
+    <!-- Skrip untuk Disqus -->
+    <script>
+      var disqus_config = function () {
+        // ID unik halaman ini akan diatur oleh JavaScript
+        this.page.url = window.location.href;
+        this.page.identifier = window.location.search.substring(1);
+      };
+      (function () {
+        var d = document,
+          s = d.createElement("script");
+        s.src = "https://mangaku-4.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript
+      >Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript"
+        >comments powered by Disqus.</a
+      ></noscript
+    >
+
+    <!-- Skrip Firebase dan Logika Halaman -->
+    <script type="module" src="js/firebase.js" defer></script>
+    <script type="module" src="js/detail.js" defer></script>
+  </body>
+</html>

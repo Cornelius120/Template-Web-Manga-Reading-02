@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Manga o Yonde</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Gaya khusus untuk panel admin */
+      body {
+        background-color: var(--body-color);
+      }
+      .admin-container {
+        max-width: 968px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--container-color);
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px hsla(var(--hue), 4%, 15%, 0.2);
+      }
+      .admin-form .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .admin-form label {
+        display: block;
+        margin-bottom: var(--mb-0-5);
+        font-weight: var(--font-semi-bold);
+        color: var(--title-color);
+      }
+      .admin-form input,
+      .admin-form textarea,
+      .admin-form select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--text-color-light);
+        background-color: var(--input-color);
+        color: var(--text-color);
+        font-family: var(--body-font);
+      }
+      .admin-form textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+      .genre-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
+      }
+      .genre-list label {
+        font-weight: var(--font-medium);
+      }
+      #admin-panel-view,
+      #comic-list-section,
+      #add-comic-section,
+      #api-key-section {
+        display: none;
+      } /* Sembunyikan semua view dulu */
+      #admin-login-view {
+        display: block;
+        text-align: center;
+      } /* Tampilkan login view secara default */
+      .admin-nav {
+        margin-bottom: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .admin-nav .button.active {
+        background-color: var(--first-color-alt);
+      }
+      .comic-list-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .comic-list-table th,
+      .comic-list-table td {
+        padding: 0.75rem;
+        border: 1px solid var(--text-color-light);
+        text-align: left;
+        vertical-align: middle;
+      }
+      .comic-list-table th {
+        background-color: var(--input-color);
+      }
+      .comic-list-table img {
+        width: 50px;
+        height: auto;
+        border-radius: 0.25rem;
+      }
+      .action-buttons button {
+        margin-right: 0.5rem;
+      }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .admin-header-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .admin-header-actions i {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--title-color);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tampilan Login (LENGKAP) -->
+    <div id="admin-login-view" class="admin-container">
+      <h2>Akses Panel Admin</h2>
+      <p>Silakan login untuk melanjutkan.</p>
+      <div class="login-options">
+        <button id="admin-login-google" class="button">
+          Login dengan Google
+        </button>
+      </div>
+      <hr style="margin: 2rem 0" />
+      <form id="email-login-form" class="admin-form" style="text-align: left">
+        <h3>Login dengan Email</h3>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <button type="submit" class="button">Login</button>
+        <p id="login-error" style="color: red; margin-top: 1rem"></p>
+      </form>
+    </div>
+
+    <!-- Panel Admin utama -->
+    <main id="admin-panel-view">
+      <div class="admin-container">
+        <div class="admin-header">
+          <h1>Admin Panel</h1>
+          <div class="admin-header-actions">
+            <i class="fas" id="theme-button"></i>
+            <!-- TOMBOL DARK MODE BARU -->
+            <button id="admin-logout-button" class="button">Logout</button>
+          </div>
+        </div>
+        <p>Selamat datang, <span id="admin-display-name"></span>!</p>
+
+        <!-- Navigasi di dalam Panel Admin -->
+        <nav class="admin-nav">
+          <button id="show-list-btn" class="button">Daftar Komik</button>
+          <button id="show-add-btn" class="button">Tambah Komik Baru</button>
+          <button id="show-api-key-btn" class="button">Pengaturan API</button>
+        </nav>
+
+        <hr />
+
+        <!-- Tampilan Daftar Komik -->
+        <section id="comic-list-section">
+          <h2>Daftar Komik Saya</h2>
+          <table class="comic-list-table">
+            <thead>
+              <tr>
+                <th>Thumbnail</th>
+                <th>Judul</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="comic-list-tbody">
+              <!-- Daftar komik akan diisi oleh JavaScript di sini -->
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Tampilan Tambah Komik -->
+        <section id="add-comic-section">
+          <h2>Tambah Komik Baru</h2>
+          <form id="add-comic-form" class="admin-form">
+            <div class="form-group">
+              <label for="comic-title">Judul Komik</label
+              ><input type="text" id="comic-title" required />
+            </div>
+            <div class="form-group">
+              <label for="comic-alt-titles"
+                >Judul Alternatif (Satu per baris)</label
+              ><textarea id="comic-alt-titles"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="comic-authors">Author (Pisahkan dengan koma)</label
+              ><input type="text" id="comic-authors" />
+            </div>
+            <div class="form-group">
+              <label for="comic-artists">Artist (Pisahkan dengan koma)</label
+              ><input type="text" id="comic-artists" />
+            </div>
+            <div class="form-group">
+              <label for="comic-synopsis">Sinopsis</label
+              ><textarea id="comic-synopsis" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="comic-thumbnail">URL Thumbnail Komik</label
+              ><input
+                type="text"
+                id="comic-thumbnail"
+                placeholder="Tempel link dari ImgBB, dll."
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Genre</label>
+              <div class="genre-list" id="genre-list-container"></div>
+            </div>
+            <div class="form-group">
+              <label for="comic-type">Tipe</label
+              ><select id="comic-type">
+                <option value="Manhwa">Manhwa</option>
+                <option value="Manhua">Manhua</option>
+                <option value="Manga">Manga</option>
+                <option value="Doujinshi">Doujinshi</option>
+                <option value="Webtoon">Webtoon</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="comic-status">Status</label
+              ><select id="comic-status">
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Hiatus">Hiatus</option>
+              </select>
+            </div>
+            <button type="submit" class="button">Simpan Komik</button>
+          </form>
+        </section>
+
+        <!-- Pengaturan API Key ImgBB -->
+        <section id="api-key-section">
+          <h2>Pengaturan API Key ImgBB</h2>
+          <p>
+            Masukkan hingga 5 API Key. Sistem akan menggunakannya secara
+            bergiliran.
+          </p>
+          <form id="api-key-form" class="admin-form">
+            <div class="form-group">
+              <label for="api-key-1">API Key 1</label
+              ><input type="text" id="api-key-1" class="api-key-input" />
+            </div>
+            <div class="form-group">
+              <label for="api-key-2">API Key 2</label
+              ><input type="text" id="api-key-2" class="api-key-input" />
+            </div>
+            <div class="form-group">
+              <label for="api-key-3">API Key 3</label
+              ><input type="text" id="api-key-3" class="api-key-input" />
+            </div>
+            <div class="form-group">
+              <label for="api-key-4">API Key 4</label
+              ><input type="text" id="api-key-4" class="api-key-input" />
+            </div>
+            <div class="form-group">
+              <label for="api-key-5">API Key 5</label
+              ><input type="text" id="api-key-5" class="api-key-input" />
+            </div>
+            <button type="submit" class="button">Simpan API Keys</button>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="js/firebase.js" defer></script>
+    <script type="module" src="js/admin.js" defer></script>
+  </body>
+</html>

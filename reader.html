@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Membaca... - Manga o Yonde</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Gaya khusus untuk halaman reader */
+      .reader__header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--container-color);
+        z-index: var(--z-fixed);
+        box-shadow: 0 2px 4px hsla(var(--hue), 24%, 15%, 0.1);
+        padding: 0 1rem;
+      }
+      .reader__nav {
+        height: var(--header-height);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .reader__nav-title {
+        color: var(--title-color);
+        font-weight: var(--font-medium);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60%;
+      }
+      .reader__nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .reader__nav-actions i {
+        color: var(--title-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .reader__container {
+        padding-top: var(--header-height);
+        text-align: center;
+      }
+      .reader__image {
+        max-width: 100%;
+        display: block;
+        margin: 0 auto; /* MEMBUAT GAMBAR DI TENGAH */
+      }
+      .reader__navigation {
+        padding: 2rem 0;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      /* Gaya untuk Panel Pengaturan BARU */
+      .settings-panel {
+        position: fixed;
+        top: var(--header-height);
+        right: -100%;
+        width: 300px;
+        height: calc(100vh - var(--header-height));
+        background-color: var(--body-color);
+        box-shadow: -2px 0 8px hsla(var(--hue), 24%, 15%, 0.2);
+        padding: 1.5rem;
+        transition: 0.3s;
+        z-index: var(--z-fixed);
+        overflow-y: auto;
+      }
+      .settings-panel.show {
+        right: 0;
+      }
+      .setting {
+        margin-bottom: 1.5rem;
+      }
+      .setting label {
+        display: block;
+        font-weight: var(--font-medium);
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+      }
+      .setting select,
+      .setting input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--text-color-light);
+        background-color: var(--input-color);
+        color: var(--text-color);
+      }
+      .setting .button {
+        width: 100%;
+        text-align: center;
+        display: block;
+        padding: 0.75rem;
+      }
+      .button-danger {
+        background-color: hsl(0, 80%, 60%);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header baru yang lebih simpel -->
+    <header class="reader__header">
+      <nav class="reader__nav container">
+        <a
+          id="back-to-detail"
+          href="#"
+          class="nav__link"
+          title="Kembali ke Detail Komik"
+          ><i class="fas fa-arrow-left"></i
+        ></a>
+        <h1 class="reader__nav-title" id="reader-title">Memuat...</h1>
+        <div class="reader__nav-actions">
+          <i class="fas" id="theme-button"></i>
+          <!-- TOMBOL DARK MODE DIPERBAIKI -->
+          <i class="fas fa-cog" id="settings-button"></i>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Panel Pengaturan (tersembunyi) BARU -->
+    <div class="settings-panel" id="settings-panel">
+      <div class="setting">
+        <label for="image-size-slider">Ukuran Gambar</label>
+        <input
+          type="range"
+          id="image-size-slider"
+          min="50"
+          max="100"
+          value="100"
+        />
+      </div>
+      <div class="setting">
+        <label for="chapter-select">Pilih Chapter</label>
+        <select id="chapter-select"></select>
+      </div>
+      <div class="setting">
+        <label for="page-select">Pilih Halaman</label>
+        <select id="page-select"></select>
+      </div>
+      <div class="setting">
+        <a
+          href="#"
+          id="download-chapter-btn"
+          class="button"
+          style="display: none"
+        >
+          <i class="fas fa-download"></i> Download Chapter
+        </a>
+      </div>
+      <div class="setting">
+        <button id="report-button" class="button button-danger">
+          <i class="fas fa-exclamation-triangle"></i> Laporkan Masalah
+        </button>
+      </div>
+    </div>
+
+    <main class="main">
+      <div class="reader__container" id="reader-images-container">
+        <p>Memuat chapter...</p>
+      </div>
+
+      <!-- Navigasi Bawah (Hanya Sebelumnya/Selanjutnya) -->
+      <div class="reader__navigation container">
+        <a href="#" id="prev-chapter-btn" class="button" style="display: none"
+          >&laquo; Chapter Sebelumnya</a
+        >
+        <a href="#" id="next-chapter-btn" class="button" style="display: none"
+          >Chapter Selanjutnya &raquo;</a
+        >
+      </div>
+
+      <section class="container">
+        <div id="disqus_thread" style="margin-top: 2rem"></div>
+      </section>
+    </main>
+
+    <!-- ... skrip-skrip tetap sama ... -->
+    <script type="module" src="js/firebase.js" defer></script>
+    <script type="module" src="js/reader.js" defer></script>
+  </body>
+</html>

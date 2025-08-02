@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Chapter - Admin Panel</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Menggunakan gaya yang sama dengan admin.html */
+      body {
+        background-color: var(--body-color);
+      }
+      .admin-container {
+        max-width: 968px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--container-color);
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px hsla(var(--hue), 4%, 15%, 0.2);
+      }
+      .chapter-list-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .chapter-list-table th,
+      .chapter-list-table td {
+        padding: 0.75rem;
+        border: 1px solid var(--text-color-light);
+        text-align: left;
+        vertical-align: middle;
+      }
+      .chapter-list-table th {
+        background-color: var(--input-color);
+      }
+      .action-buttons button {
+        margin-right: 0.5rem;
+      }
+      .button-danger {
+        background-color: hsl(0, 80%, 60%);
+      }
+      .button-danger:hover {
+        background-color: hsl(0, 80%, 55%);
+      }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .admin-header .left-actions {
+        display: flex;
+        gap: 1rem;
+      }
+      .admin-header i {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--title-color);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="admin-container">
+        <div class="admin-header">
+          <div class="left-actions">
+            <a href="admin.html" class="button">&larr; Kembali</a>
+            <a id="add-new-chapter-btn" class="button">Tambah Chapter Baru</a>
+            <!-- TOMBOL BARU -->
+          </div>
+          <i class="fas" id="theme-button"></i>
+        </div>
+
+        <h1 id="comic-title-heading">Memuat nama komik...</h1>
+        <p>Berikut adalah daftar chapter untuk komik ini.</p>
+
+        <hr style="margin: 2rem 0" />
+
+        <table class="chapter-list-table">
+          <thead>
+            <tr>
+              <th>Chapter</th>
+              <th>Judul</th>
+              <th>Tanggal Rilis</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="chapter-list-tbody">
+            <!-- Daftar chapter akan diisi oleh JavaScript di sini -->
+            <tr>
+              <td colspan="4">Memuat daftar chapter...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script type="module" src="js/firebase.js" defer></script>
+    <script type="module" src="js/chapter-list.js" defer></script>
+  </body>
+</html>
