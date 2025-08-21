@@ -11,7 +11,7 @@ admin.initializeApp({
 
 // ===================================================================
 // GANTI DENGAN EMAIL ANDA YANG INGIN DIJADIKAN ADMIN
-const emailToMakeAdmin = "sembiringcornelius18@gmail.com";
+const emailToMakeAdmin = "EmailKamu@gmail.com";
 // ===================================================================
 
 console.log(`Mencoba menjadikan ${emailToMakeAdmin} sebagai admin...`);
